@@ -25,9 +25,12 @@
 ;; http://bible-api.com to get a verse from the World English Bible.
 ;;
 ;; It requires the request package available from melpa or marmalade.
+;; M-x package-install request
+;; And s.el from https://github.com/magnars/s.el.git or M-x package-install s
 
 ;;; Code:
 (require 'request)
+(require 's)
 (require 'json)
 
 (defvar bible-verse-history nil
@@ -36,7 +39,8 @@
 (defun format-verse (verse)
   "Parse json and inset VERSE and reference."
   (let ((obj (json-read-from-string verse)))
-    (insert (cdr (assoc 'text obj)))
+    (insert (s-word-wrap 80 (replace-regexp-in-string "\n" " " (cdr (assoc 'text obj)))))
+    (insert "\n")
     (insert (cdr (assoc 'reference obj)))))
 
 (defun get-verse (verse)
