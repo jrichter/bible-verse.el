@@ -28,6 +28,20 @@
 ;; M-x package-install request
 ;; And s.el from https://github.com/magnars/s.el.git or M-x package-install s
 
+;; Translations
+;; | Language   | Name                                   | Identifier    |
+;; |------------+----------------------------------------+---------------|
+;; | Cherokee   | Cherokee New Testament                 | cherokee      |
+;; | English    | King James Version                     | kjv           |
+;; | English    | World English Bible                    | web (default) |
+;; | Portuguese | João Ferreira de Almeida               | almeida       |
+;; | Romanian   | Romanian Corrected Cornilescu Version  | rccv          |
+
+;; Example:
+;; Enter a verse: John 3:16 (kjv)
+;; Enter a verse: John 3:16
+;; Enter a verse: john3:16
+
 ;;; Code:
 (require 'request)
 (require 's)
@@ -39,13 +53,18 @@
 (defun format-verse (verse)
   "Parse json and inset VERSE and reference."
   (let ((obj (json-read-from-string verse)))
-    (insert (s-word-wrap 80 (replace-regexp-in-string "\n" " " (cdr (assoc 'text obj)))))
+    (insert (s-word-wrap 80
+                         (replace-regexp-in-string "  +" " "
+                         (replace-regexp-in-string "\n" " " (cdr (assoc 'text obj))))))
     (insert "\n")
+    (insert " ")
     (insert (cdr (assoc 'reference obj)))))
 
 (defun get-verse (verse)
   "Get the VERSE from bible-api.com."
-  (setq verse (replace-regexp-in-string " " "+" verse))
+  (setq verse (replace-regexp-in-string " " "" verse))
+  (setq verse (replace-regexp-in-string "(" "?translation=" verse))
+  (setq verse (replace-regexp-in-string ")" "" verse))
   (request
    (concat "http://bible-api.com/" verse)
    :parser 'buffer-string
