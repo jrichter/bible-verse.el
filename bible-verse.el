@@ -34,6 +34,7 @@
 ;; | Cherokee   | Cherokee New Testament                 | cherokee      |
 ;; | English    | King James Version                     | kjv           |
 ;; | English    | World English Bible                    | web (default) |
+;; | Latin	| Clementine Latin Vulgate               | clementine    |
 ;; | Portuguese | João Ferreira de Almeida               | almeida       |
 ;; | Romanian   | Romanian Corrected Cornilescu Version  | rccv          |
 
